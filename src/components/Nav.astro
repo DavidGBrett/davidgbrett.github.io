@@ -61,12 +61,34 @@ const isCurrentPage = (href: string) => {
 		list-style: none;
 	}
     .link {
+        position: relative;
+        display: inline-block;
+        padding: 0.35rem 0.15rem;
         color: var(--color-text);
+        text-decoration: none;
+        transition: color 0.2s ease;
+    }
+    .link::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: -0.15rem;
+        width: 100%;
+        height: 2px;
+        background: var(--color-accent-primary);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.2s ease;
     }
     .link:hover,
     .link:focus-visible,
     .link[aria-current='page'] {
         color: var(--color-accent-primary);
+    }
+    .link:hover::after,
+    .link:focus-visible::after,
+    .link[aria-current='page']::after {
+        transform: scaleX(1);
     }
 </style>
 
