@@ -15,7 +15,9 @@ import '../styles/global.css';
 	</head>
 	<body>
         <Nav/>
-		<slot />
+        <main>
+            <slot />
+        </main>
 	</body>
 </html>
 
@@ -31,5 +33,10 @@ import '../styles/global.css';
         padding-top: var(--nav-header-height);
         background: var(--color-bg);
         color: var(--color-text);
+    }
+
+    main{
+        margin: 0 auto;
+        max-width: 80vw;
     }
 </style>
