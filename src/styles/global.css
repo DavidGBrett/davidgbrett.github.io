@@ -1,3 +1,10 @@
 :root {
-    --nav-header-height: 5em
+    --nav-header-height: 5em;
+    
+    --color-bg: #111;
+    --color-bg-secondary: #1b1b1b;
+    --color-text: #f2f2f2;
+    --color-muted: #ccc;
+    --color-accent-primary: #ffcc00;
+    --color-accent-secondary: #4da3ff;
 }
