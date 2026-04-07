@@ -47,7 +47,7 @@ const isCurrentPage = (href: string) => {
         transition: border-color 0.5s ease-out, border-bottom-width 0.1s ease-out;
     }
     nav.scrolled{
-        border-bottom-color: black;
+        border-bottom-color: var(--color-accent-primary);
         transition: border-color 1s ease-in, border-bottom-width 0.2s ease-in;
         border-bottom-width: 4px;
     }
@@ -60,6 +60,14 @@ const isCurrentPage = (href: string) => {
 		line-height: 1.2;
 		list-style: none;
 	}
+    .link {
+        color: var(--color-text);
+    }
+    .link:hover,
+    .link:focus-visible,
+    .link[aria-current='page'] {
+        color: var(--color-accent-primary);
+    }
 </style>
 
 <nav id="nav">
