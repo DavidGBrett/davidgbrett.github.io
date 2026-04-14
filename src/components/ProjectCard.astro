@@ -1,0 +1,84 @@
+---
+import type { Project } from '../types/project';
+
+interface Props {
+	project: Project;
+}
+
+const { project } = Astro.props;
+---
+
+<article class="project-card">
+	<header class="project-header">
+		{project.icon && <img class="project-icon" src={project.icon} alt={`${project.name} icon`} loading="lazy" />}
+		<h4>{project.name}</h4>
+	</header>
+
+	<p>{project.description}</p>
+
+	<div class="project-links">
+		{project.links.map((link, index) => (
+			<>
+				{index > 0 && <span aria-hidden="true">·</span>}
+				<a href={link.href} target="_blank" rel="noopener">{link.label}</a>
+			</>
+		))}
+	</div>
+</article>
+
+<style>
+	.project-card {
+		padding: 1rem;
+		border-radius: 0.2rem;
+		background: var(--color-bg-secondary);
+		color: var(--color-text);
+
+		display: grid;
+  		grid-template-rows: auto 1fr auto;
+	}
+
+	.project-header {
+		display: flex;
+		align-items: center;
+		gap: 0.65rem;
+		margin-bottom: 0.65rem;
+	}
+
+	.project-header h4 {
+		margin: 0;
+		font-size: 1.08rem;
+	}
+
+	.project-icon {
+		width: 2rem;
+		height: 2rem;
+		flex-shrink: 0;
+	}
+
+	p {
+		margin: 0 0 0.85rem;
+		line-height: 1.45;
+		color: var(--color-muted);
+	}
+
+	.project-links {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0.45rem;
+		font-size: 0.95rem;
+	}
+
+	.project-links span {
+		color: var(--color-muted);
+	}
+
+	.project-links a {
+		color: var(--color-text);
+		transition: color 0.2s ease;
+	}
+
+	.project-links a:hover {
+		color: var(--color-accent-primary);
+	}
+</style>
