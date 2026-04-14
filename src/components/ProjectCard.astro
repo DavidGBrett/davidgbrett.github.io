@@ -28,6 +28,9 @@ const { project } = Astro.props;
 
 <style>
 	.project-card {
+		--project-description-line-height: 1.45;
+		--project-description-max-lines: 2;
+
 		padding: 1rem;
 		border-radius: 0.2rem;
 		background: var(--color-bg-secondary);
@@ -57,8 +60,14 @@ const { project } = Astro.props;
 
 	p {
 		margin: 0 0 0.85rem;
-		line-height: 1.45;
+		line-height: var(--project-description-line-height);
+		min-height: calc(1em * var(--project-description-line-height) * var(--project-description-max-lines));
 		color: var(--color-muted);
+		overflow: hidden;
+		text-overflow: ellipsis;
+		display: -webkit-box;
+		-webkit-line-clamp: var(--project-description-max-lines);
+		-webkit-box-orient: vertical;
 	}
 
 	.project-links {
