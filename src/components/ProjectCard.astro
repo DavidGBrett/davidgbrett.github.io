@@ -11,7 +11,10 @@ const { project } = Astro.props;
 <article class="project-card">
 	<header class="project-header">
 		{project.icon && <img class="project-icon" src={project.icon} alt={`${project.name} icon`} loading="lazy" />}
-		<h4>{project.name}</h4>
+		<div class="project-title-group">
+			<h4>{project.name}</h4>
+			{project.subtitle && <div class="project-subtitle">{project.subtitle}</div>}
+		</div>
 	</header>
 
 	<p>{project.description}</p>
@@ -50,6 +53,17 @@ const { project } = Astro.props;
 	.project-header h4 {
 		margin: 0;
 		font-size: 1.08rem;
+	}
+
+	.project-title-group {
+		display: flex;
+		flex-direction: column;
+		gap: 0.15rem;
+	}
+
+	.project-subtitle {
+		font-size: 0.85rem;
+		color: color-mix(in srgb, var(--color-muted) 70%, transparent);
 	}
 
 	.project-icon {
