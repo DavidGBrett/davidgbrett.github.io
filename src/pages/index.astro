@@ -7,7 +7,17 @@ let lorem_ipsum = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusc
 ---
 
 <Layout>
-	<Projects />
-	<Contributions />
-	<p>{lorem_ipsum}{lorem_ipsum}{lorem_ipsum}</p>
+	<div class="sections">
+		<Projects />
+		<Contributions />
+		<p>{lorem_ipsum}{lorem_ipsum}{lorem_ipsum}</p>
+	</div>
 </Layout>
+
+<style>
+  .sections {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+</style>
