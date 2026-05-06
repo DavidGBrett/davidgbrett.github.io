@@ -1,0 +1,38 @@
+---
+import ProjectCardsGrid from './ProjectCardsGrid.astro';
+import { flowLauncherPlugins } from '../data/flowLauncherPlugins';
+---
+
+<section class="about" aria-labelledby="about-heading">
+	<h1 id="about-heading">David Brett</h2>
+	<p>Irish Software Engineer & Open-Source Maintainer</p>
+	<ul>
+		<li>Graduate (BSc Computer Science, University College Cork)</li>
+		<li>Core maintainer & plugin author for <a href="https://github.com/Flow-Launcher/Flow.Launcher" target="_blank" rel="noopener">Flow Launcher</a> (C#)</li>
+	</ul>
+
+</section>
+
+<style>
+	h2 {
+		margin: 0 0 1.25rem;
+		font-size: clamp(1.4rem, 2vw, 1.9rem);
+		color: var(--color-text);
+	}
+
+	h3 {
+		margin: 0 0 1rem;
+		font-size: 1.15rem;
+		color: var(--color-muted);
+	}
+
+	a {
+		color: var(--color-text);
+		transition: color 0.2s ease;
+	}
+
+	a:hover {
+		color: var(--color-accent-primary);
+	}
+
+</style>

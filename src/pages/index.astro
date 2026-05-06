@@ -1,4 +1,5 @@
 ---
+import About from '../components/About.astro';
 import Contributions from '../components/Contributions.astro';
 import Projects from '../components/Projects.astro';
 import Layout from '../layouts/Layout.astro';
@@ -8,6 +9,7 @@ let lorem_ipsum = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusc
 
 <Layout>
 	<div class="sections">
+    <About />
 		<Projects />
 		<Contributions />
 		<p>{lorem_ipsum}{lorem_ipsum}{lorem_ipsum}</p>
