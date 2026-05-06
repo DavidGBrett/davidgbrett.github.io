@@ -5,13 +5,7 @@ const textLinks: { label: string; href: string }[] = [
 	{ label: 'Open Source Contributions', href: '/#contributions-heading' },
 ];
 
-/** Test if a link is pointing to the current page. */
-const isCurrentPage = (href: string) => {
-	let pathname = Astro.url.pathname.replace(import.meta.env.BASE_URL, '');
-	if (pathname.at(0) !== '/') pathname = '/' + pathname;
-	if (pathname.at(-1) !== '/') pathname += '/';
-	return pathname === href || (href !== '/' && pathname.startsWith(href));
-};
+
 ---
 <script>
     console.log("Script")
@@ -88,13 +82,11 @@ const isCurrentPage = (href: string) => {
         transition: transform 0.2s ease;
     }
     .link:hover,
-    .link:focus-visible,
-    .link[aria-current='page'] {
+    .link:focus-visible {
         color: var(--color-accent-primary);
     }
     .link:hover::after,
-    .link:focus-visible::after,
-    .link[aria-current='page']::after {
+    .link:focus-visible::after {
         transform: scaleX(1);
     }
 </style>
@@ -104,7 +96,7 @@ const isCurrentPage = (href: string) => {
         {
 				textLinks.map(({ label, href }) => (
 					<li>
-						<a aria-current={isCurrentPage(href) ? 'page' : null} class="link" href={href}>
+						<a class="link" href={href}>
 							{label}
 						</a>
 					</li>
