@@ -19,15 +19,25 @@ const textLinks: { label: string; href: string }[] = [
 
         // --- Get linksByHeadingId ---
 
+        const isCurrentPageUrl = (url: URL) => url.pathname === window.location.pathname;
+
+        const isTopAnchorHref = (href: string | null): boolean => {
+            if (!href) return false;
+            const url = new URL(href, window.location.href);
+            return isCurrentPageUrl(url) && (url.hash === '' || url.hash === '#' || url.hash === '#top');
+        };
+
         const getHeadingIdFromHref = (href: string | null): string | null => {
             if (!href) return null;
             const url = new URL(href, window.location.href);
-            const isCurrentPage = url.pathname === window.location.pathname;
+            const isCurrentPage = isCurrentPageUrl(url);
             const hash = url.hash.startsWith('#') ? url.hash.slice(1) : '';
             return isCurrentPage && hash ? hash : null;
         };
 
         const navLinks = Array.from(nav.querySelectorAll<HTMLAnchorElement>('a.link'));
+        const topAnchorLinks = navLinks.filter(link => isTopAnchorHref(link.getAttribute('href')));
+
         const linksByHeadingId = new Map<string, HTMLAnchorElement>(
             navLinks.flatMap(link => {
                 const headingId = getHeadingIdFromHref(link.getAttribute('href'));
@@ -58,13 +68,16 @@ const textLinks: { label: string; href: string }[] = [
             const activeHeading = scrolledPastHeadings
                 .sort((a, b) => b.headingY - a.headingY)[0];
 
-            linksByHeadingId.forEach((link, headingId) => {
-                if (headingId === activeHeading?.headingId) {
-                    link.setAttribute('aria-current', 'page');
-                } else {
-                    link.removeAttribute('aria-current');
-                }
-            });
+            navLinks.forEach(link => link.removeAttribute('aria-current'));
+
+            if (activeHeading) {
+                const activeHeadingLink = linksByHeadingId.get(activeHeading.headingId);
+                activeHeadingLink?.setAttribute('aria-current', 'page');
+                return;
+            }
+
+            // Fallback to top links (/# or #) while no heading has been scrolled past.
+            topAnchorLinks.forEach(link => link.setAttribute('aria-current', 'page'));
         };
 
         // --- Scroll handler ---
