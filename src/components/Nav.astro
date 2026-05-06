@@ -1,30 +1,91 @@
 ---
 
 const textLinks: { label: string; href: string }[] = [
-	{ label: 'Home', href: '/' },
-	{ label: 'Projects', href: '/projects/' },
-	{ label: 'About', href: '/about/' },
+	{ label: 'Projects', href: '/#projects-heading' },
+	{ label: 'Open Source Contributions', href: '/#contributions-heading' },
 ];
 
-/** Test if a link is pointing to the current page. */
-const isCurrentPage = (href: string) => {
-	let pathname = Astro.url.pathname.replace(import.meta.env.BASE_URL, '');
-	if (pathname.at(0) !== '/') pathname = '/' + pathname;
-	if (pathname.at(-1) !== '/') pathname += '/';
-	return pathname === href || (href !== '/' && pathname.startsWith(href));
-};
+
 ---
 <script>
-    console.log("Script")
-    window.addEventListener('scroll', function() {
-        const nav = document.querySelector('nav');
-        if (nav === null){return}
-        if (window.scrollY > 0) {
-            nav.classList.add('scrolled');
-        } else {
-            nav.classList.remove('scrolled');
-        }
-    });
+    const nav = document.getElementById('nav');
+
+    if (nav instanceof HTMLElement) {
+        // --- Config ---
+
+        // How far ahead of the nav bottom a heading can be and still count as scrolled passed
+        const scrolledPastOffsetPx = 50;
+
+        // --- Get linksByHeadingId ---
+
+        const getHeadingIdFromHref = (href: string | null): string | null => {
+            if (!href) return null;
+            const url = new URL(href, window.location.href);
+            const isCurrentPage = url.pathname === window.location.pathname;
+            const hash = url.hash.startsWith('#') ? url.hash.slice(1) : '';
+            return isCurrentPage && hash ? hash : null;
+        };
+
+        const navLinks = Array.from(nav.querySelectorAll<HTMLAnchorElement>('a.link'));
+        const linksByHeadingId = new Map<string, HTMLAnchorElement>(
+            navLinks.flatMap(link => {
+                const headingId = getHeadingIdFromHref(link.getAttribute('href'));
+                return headingId ? ([[headingId, link]] as const) : [];
+            })
+        );
+
+        // --- State update functions ---
+
+        const updateScrolledState = (scrollY: number) => {
+            nav.classList.toggle('scrolled', scrollY > 0);
+        };
+
+        const updateActiveLinkState = (scrollY: number) => {
+            const threshold = scrollY + nav.getBoundingClientRect().height + scrolledPastOffsetPx;
+
+            // Collect headings that have been scrolled past the threshold
+            const scrolledPastHeadings = Array.from(linksByHeadingId.keys())
+                .map(headingId => {
+                    const heading = document.getElementById(headingId);
+                    if (!heading) return null;
+                    const headingY = heading.getBoundingClientRect().top + scrollY;
+                    return headingY <= threshold ? { headingId, headingY } : null;
+                })
+                .filter((entry): entry is NonNullable<typeof entry> => entry !== null);
+
+            // The active heading is the farthest one already scrolled past
+            const activeHeading = scrolledPastHeadings
+                .sort((a, b) => b.headingY - a.headingY)[0];
+
+            linksByHeadingId.forEach((link, headingId) => {
+                if (headingId === activeHeading?.headingId) {
+                    link.setAttribute('aria-current', 'page');
+                } else {
+                    link.removeAttribute('aria-current');
+                }
+            });
+        };
+
+        // --- Scroll handler ---
+
+        let isTicking = false;
+
+        const onScrollFrame = () => {
+            const scrollY = Math.max(window.scrollY, 0);
+            updateScrolledState(scrollY);
+            updateActiveLinkState(scrollY);
+            isTicking = false;
+        };
+
+        const onScroll = () => {
+            if (isTicking) return;
+            isTicking = true;
+            window.requestAnimationFrame(onScrollFrame);
+        };
+
+        onScrollFrame();
+        window.addEventListener('scroll', onScroll, { passive: true });
+    }
 </script>
 
 <style>
@@ -105,7 +166,7 @@ const isCurrentPage = (href: string) => {
         {
 				textLinks.map(({ label, href }) => (
 					<li>
-						<a aria-current={isCurrentPage(href) ? 'page' : null} class="link" href={href}>
+						<a class="link" href={href}>
 							{label}
 						</a>
 					</li>
