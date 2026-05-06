@@ -8,16 +8,33 @@ const textLinks: { label: string; href: string }[] = [
 
 ---
 <script>
-    console.log("Script")
-    window.addEventListener('scroll', function() {
-        const nav = document.querySelector('nav');
-        if (nav === null){return}
-        if (window.scrollY > 0) {
-            nav.classList.add('scrolled');
-        } else {
-            nav.classList.remove('scrolled');
-        }
-    });
+    const nav = document.getElementById('nav');
+
+    if (nav instanceof HTMLElement) {
+        let isTicking = false;
+
+        const syncNavScrollState = () => {
+            const scrollY = Math.max(window.scrollY, 0);
+            
+            const wasScrolled = nav.classList.contains('scrolled');
+            const isScrolled = scrollY > 0;
+            if (wasScrolled !== isScrolled) {
+                nav.classList.toggle('scrolled', isScrolled);
+            }
+
+            isTicking = false;
+        };
+
+        const onScroll = () => {
+            if (isTicking) return;
+
+            isTicking = true;
+            window.requestAnimationFrame(syncNavScrollState);
+        };
+
+        syncNavScrollState();
+        window.addEventListener('scroll', onScroll, { passive: true });
+    }
 </script>
 
 <style>
