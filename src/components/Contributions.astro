@@ -2,15 +2,27 @@
 import ProjectCardsGrid from './ProjectCardsGrid.astro';
 import { featuredContributions } from '../data/featuredContributions';
 
-let githubPullRequestsLink = "https://github.com/search?q=is%3Apr+author%3ADavidGBrett+-user%3ADavidGBrett++is%3Amerged&type=pullrequests&query=is%3Apr+is%3Aclosed+author%3ADavidGBrett+-user%3ADavidGBrett"
----
+const closedPRsLink =
+  "https://github.com/search?q=is%3Apr+author%3ADavidGBrett+-user%3ADavidGBrett+is%3Aclosed&type=pullrequests";
+
+const openPRsLink =
+  "https://github.com/search?q=is%3Apr+author%3ADavidGBrett+-user%3ADavidGBrett+is%3Aopen&type=pullrequests";---
 
 <section class="contributions" aria-labelledby="contributions-heading">
 	<h2 id="contributions-heading">Open Source Contributions</h2>
 
 	<ProjectCardsGrid projects={featuredContributions} />
 
-    <a class="more-link" href={githubPullRequestsLink} target="_blank" rel="noopener">See more..</a>
+	<div class="more-links">
+		<a class="more-link" href={closedPRsLink} target="_blank" rel="noopener">
+			Show all closed PRs…
+		</a>
+
+		<a class="more-link" href={openPRsLink} target="_blank" rel="noopener">
+			Show all open PRs…
+		</a>
+	</div>
+
 </section>
 
 <style>
@@ -20,9 +32,15 @@ let githubPullRequestsLink = "https://github.com/search?q=is%3Apr+author%3ADavid
 		color: var(--color-text);
 	}
 
+	.more-links {
+		display: flex;
+		gap: 1rem;
+		margin-top: 1rem;
+		flex-direction: row;
+	}
+
     a.more-link {
         display: block;
-        margin-top: 1rem;
 		color: var(--color-text);
 		transition: color 0.2s ease;
 	}
