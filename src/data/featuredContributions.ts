@@ -18,9 +18,17 @@ export const featuredContributions: Project[] = [
 		]
 	},
 	{
+		name: 'Improve sound handling and show title in volume mixer',
+		subtitle: 'Flow-Launcher/Flow.Launcher',
+		description: 'Fixes the blank name issue in the volume mixer by setting AssemblyTitle. Only creates the sound / media players when _settings.UseSounds is set and observes changes to that, disposing and init\'ing as needed.',
+		links: [
+			{ label: 'GitHub Pull Request', href: 'https://github.com/Flow-Launcher/Flow.Launcher/pull/4398' },
+		]
+	},
+	{
 		name: 'Add "Below Minimum" Tag',
 		subtitle: 'Lacro59/playnite-systemchecker-plugin',
-		description: 'Add "Below Minimum" tag to games if they your specs don\'t meet their minimum requirements',
+		description: 'Add "Below Minimum" tag to games if the user\'s specs don\'t meet their minimum requirements',
 		links: [
 			{ label: 'GitHub Pull Request', href: 'https://github.com/Lacro59/playnite-systemchecker-plugin/pull/64' },
 		]
